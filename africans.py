@@ -24,10 +24,18 @@ def leftout(origlist, formattedlist):
     unsung = []
     for x, elem in enumerate(formattedlist):
         payload = dict(titles=elem)
-        r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json, data=payload")
-        if "-1" in r["query"]["pages"]:
-            if "missing" in r["query"]["pages"]["-1"]:
-                unsung.append(starterlist[x])
+        r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json", data=payload)
+        if "-1" in r.json()["query"]["pages"]:
+            if "missing" in r.json()["query"]["pages"]["-1"]:
+                unsung.append(origlist[x])
     return unsung
 
 # spit out list of who is left out
+
+def run(people):
+    querynames = massagenames(people)
+    result = leftout(people, querynames)
+    for elem in result:
+        pprint.pprint(elem)
+
+run(starterlist)
