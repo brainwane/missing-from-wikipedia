@@ -20,7 +20,8 @@ def leftout(origlist, formattedlist):
     for each name, do a search to see whether the page exists on english wikipedia
     sample title that does not exist: Narrrgh
     /w/api.php?action=query&prop=info&format=json&titles=Narrrgh: if ["query"]["pages"] has a negative int like -1, -2, etc. as a key, and if a key within that dict has the value "missing" (value: ""), then the page is missing from enwiki
-    TODO: use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once."""
+    TODO: use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once.
+    Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
     unsung = []
     for x, elem in enumerate(formattedlist):
         payload = dict(titles=elem)
