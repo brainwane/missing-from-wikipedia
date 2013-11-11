@@ -35,15 +35,16 @@ def leftout(origlist, formattedlist):
         if "-1" in r.json()["query"]["pages"].keys():
             if "missing" in r.json()["query"]["pages"]["-1"].keys():
                 unsung.append(origlist[x])
+                pprint.pprint(origlist[x])
     return unsung
 
 # spit out list of who is left out
 
-def run(people):
-    listofnames = getnamelist("namelist.txt")
+def run(listfile):
+    listofnames = getnamelist(listfile)
     querynames = massagenames(listofnames)
     result = leftout(listofnames, querynames)
     for elem in result:
         pprint.pprint(elem)
 
-run(starterlist)
+run("namelist.txt")
