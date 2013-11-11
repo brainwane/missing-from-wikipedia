@@ -24,7 +24,7 @@ def leftout(origlist, formattedlist):
     unsung = []
     for x, elem in enumerate(formattedlist):
         payload = dict(titles=elem)
-        r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json", params=payload)
+        r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=", params=payload)
         if "-1" in r.json()["query"]["pages"].keys():
             if "missing" in r.json()["query"]["pages"]["-1"].keys():
                 unsung.append(origlist[x])
