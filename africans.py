@@ -20,7 +20,7 @@ def massagenames(nlist):
     """massage each name in a list to make it firstname lastname"""
     return map(lambda elem:" ".join(elem.split(", ")[::-1]), nlist)
 
-def leftout(origlist, formattedlist):
+def leftout(origlist, formattedlist, resultfile):
     """return list of people who don't have pages on English Wikipedia
 
     for each name, do a search to see whether the page exists on english wikipedia
@@ -33,7 +33,7 @@ def leftout(origlist, formattedlist):
         r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=", params=payload)
         if "-1" in r.json()["query"]["pages"].keys():
             if "missing" in r.json()["query"]["pages"]["-1"].keys():
-                outputfile((origlist[x]), "unsung.txt") # to fix and make less hardcoded
+                outputfile((origlist[x]), resultfile)
 
 # spit out list of who is left out
 
@@ -42,11 +42,9 @@ def outputfile(input, filename):
         u.write(input)
         u.write("\n")
 
-def run(listfile):
+def run(listfile, resultfile):
     listofnames = getnamelist(listfile)
     querynames = massagenames(listofnames)
-    leftout(listofnames, querynames) # was result= leftout...
-    # for elem in result:
-    #     outputfile(elem, unsungfile)
+    leftout(listofnames, querynames, resultfile)
 
-run("namelist.txt")
+run("namelist.txt", "unsung.txt")
