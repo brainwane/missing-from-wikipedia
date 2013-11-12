@@ -45,7 +45,7 @@ def leftout(nametuples, resultfile):
     We use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once.
     Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
 
-    headers = {'User-Agent': 'missing-from-wikipedia project (https://raw.github.com/brainwane/missing-from-wikipedia/), using Python requests library'}
+    headers = {'User-Agent': 'missing-from-wikipedia project (https://github.com/brainwane/missing-from-wikipedia/), using Python requests library'}
     g = chunknames(nametuples)
     for chunk in g:
         names = [x[1] for x in chunk]
