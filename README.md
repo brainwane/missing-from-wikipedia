@@ -17,6 +17,8 @@ If you have Python installed on your computer, go to a Terminal (or command line
 
 and things should just work. Once it's done, you should have a "missing-people.txt" file.
 
+More options
+============
 You might want to change these assumptions in the file:
-* put your name in the User-Agent header on line 43
-* count redirects as "this page exists": yes (to change to no, remove the "&redirects=" part of the URL on line 48)
+* put your name in the User-Agent header on line 48
+* count redirects as "this page exists": yes (to change to no, remove the "&redirects=" part of the URI on line 53)
