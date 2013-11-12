@@ -1,10 +1,10 @@
 #!/usr/bin/python
 #encoding:utf-8
 # Copyright 2013 Sumana Harihareswara
-# GPL - see COPYING
-# The point of this script is to take a giant list of names from some source, check which names do not have an English Wikipedia entry, and then spit out that resultant set. You could trivially change the API call in 'leftout' to check a different wiki, and change the call to "run" to change the filenames.
+# Licensed under the GPL - see LICENSE
+# The point of this script is to take a giant list of names from some source (namelist.txt), check which names do not have an English Wikipedia entry, and then spit out that resultant set (missing-people.txt). You could trivially change the API call in 'leftout' to check a different wiki, and change the call to "run" to change the filenames.
 # Please add your name to the User-Agent in the headers dict in 'leftout'.
-# Note: to find out who actually did have an entry, do a simple set operation for difference between the original namelist and the file that comes out at the end.
+# Note: to find out who actually did have an entry on the wiki, do a simple set operation for difference between the original namelist and the file that comes out at the end.
 
 # test names include: Mazari, Abu ʿAbd Allah Muhammad al- ; Mlapa III; Andrade, Mário Pinto de; Bayram al-Khaʾmis, Mohamed; Be’alu Girma; Bédié, Henri-Konan; Obama, Barack, Sr.; Okwei
 
