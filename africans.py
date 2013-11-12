@@ -19,25 +19,26 @@ def getnamelist(filename):
     return namelist
 
 def massagenames(nlist):
-    """massage each name in a list to make it firstname lastname"""
-    return map(lambda elem:" ".join(elem.split(", ")[::-1]), nlist)
+    """massage each name in a list to make it firstname lastname, return a list of old-and-new tuples"""
+    mlist= map(lambda elem:" ".join(elem.split(", ")[::-1]), nlist)
+    return zip(nlist, mlist)
 
-def leftout(origlist, formattedlist, resultfile):
+def leftout(nametuples, resultfile):
     """return list of people who don't have pages on English Wikipedia
 
     for each name, do a search to see whether the page exists on english wikipedia
     sample title that does not exist: Narrrgh
     /w/api.php?action=query&prop=info&format=json&titles=Narrrgh: if ["query"]["pages"] has a negative int like -1, -2, etc. as a key, and if a key within that dict has the value "missing" (value: ""), then the page is missing from enwiki
-    TODO: use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once.
+    TODO: use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once. Can use chunks of up to 50 titles in 1 query. Right now it is ~1200 names; as long as I do them in series with a maxlag param, I think that is fine.
     Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
-    tocheck = chunkofnames(nametuples) # need to iterate on this - while?
+
     headers = {'User-Agent': 'Sumana Harihareswara prototype (http://github.com/brainwane) using Python requests library'}
-    for x, elem in enumerate(tocheck):
-        payload = dict(titles=[x[1] for x in tocheck])
+    for namepair in nametuples:
+        payload = dict(titles=namepair[1])
         r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5", params=payload, headers=headers)
-        if "-1" in r.json()["query"]["pages"].keys(): # actually, any neg number
+        if "-1" in r.json()["query"]["pages"].keys():
             if "missing" in r.json()["query"]["pages"]["-1"].keys():
-                outputfile((towrite[x]), resultfile)
+                outputfile(namepair[0]), resultfile)
 
 # spit out list of who is left out
 
@@ -49,6 +50,6 @@ def outputfile(input, filename):
 def run(listfile, resultfile):
     listofnames = getnamelist(listfile)
     querynames = massagenames(listofnames)
-    leftout(listofnames, querynames, resultfile)
+    leftout(querynames, resultfile)
 
 run("namelist.txt", "unsung.txt")
