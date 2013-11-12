@@ -28,23 +28,25 @@ def leftout(origlist, formattedlist):
     /w/api.php?action=query&prop=info&format=json&titles=Narrrgh: if ["query"]["pages"] has a negative int like -1, -2, etc. as a key, and if a key within that dict has the value "missing" (value: ""), then the page is missing from enwiki
     TODO: use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once.
     Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
-    unsung = []
     for x, elem in enumerate(formattedlist):
         payload = dict(titles=elem)
         r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=", params=payload)
         if "-1" in r.json()["query"]["pages"].keys():
             if "missing" in r.json()["query"]["pages"]["-1"].keys():
-                unsung.append(origlist[x])
-                pprint.pprint(origlist[x])
-    return unsung
+                outputfile((origlist[x]), "unsung.txt") # to fix and make less hardcoded
 
 # spit out list of who is left out
+
+def outputfile(input, filename):
+    with codecs.open(filename, encoding='utf-8', mode='a') as u:
+        u.write(input)
+        u.write("\n")
 
 def run(listfile):
     listofnames = getnamelist(listfile)
     querynames = massagenames(listofnames)
-    result = leftout(listofnames, querynames)
-    for elem in result:
-        pprint.pprint(elem)
+    leftout(listofnames, querynames) # was result= leftout...
+    # for elem in result:
+    #     outputfile(elem, unsungfile)
 
 run("namelist.txt")
