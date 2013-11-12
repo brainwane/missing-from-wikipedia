@@ -12,7 +12,7 @@ import requests
 import codecs
 import sys
 
-(inputfile, wiki, outputfile) = sys.argv[1:]
+(inputfile, wiki, outfile) = sys.argv[1:]
 
 def getnamelist(filename):
     """Open the file and turn it into a list split up by newlines."""
@@ -59,8 +59,8 @@ def leftout(nametuples, resultfile):
 
 # spit out list of who is left out
 
-def outputfile(input, filename):
-    with codecs.open(filename, encoding='utf-8', mode='a') as u:
+def outputfile(input, fname):
+    with codecs.open(fname, encoding='utf-8', mode='a') as u:
         u.write(input)
         u.write("\n")
 
@@ -71,4 +71,4 @@ def run(listfile, resultfile):
 
 if __name__ == "__main__":
     """Run as: ./missing.py input-filename Wikipedia-code output-filename"""
-    run(inputfile, outputfile)
+    run(inputfile, outfile)
