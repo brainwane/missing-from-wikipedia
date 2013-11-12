@@ -38,8 +38,8 @@ def leftout(nametuples, resultfile):
     for namepair in nametuples:
         payload = dict(titles=namepair[1])
         r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5", params=payload, headers=headers)
-        if "-1" in r.json()["query"]["pages"].keys():
-            if "missing" in r.json()["query"]["pages"]["-1"].keys():
+        for key in r.json()["query"]["pages"]:
+            if "missing" in r.json()["query"]["pages"][key]:
                 outputfile(namepair[0], resultfile)
 
 # spit out list of who is left out
