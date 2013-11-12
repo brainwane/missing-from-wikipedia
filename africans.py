@@ -1,5 +1,7 @@
 #!/usr/bin/python
 #encoding:utf-8
+# Copyright 2013 Sumana Harihareswara
+# GPL
 # The point of this script is to take a giant list of 2126 names from the Dictionary of African Biography Oxford Reference, check which names do not have an English Wikipedia entry, and then spit out that resultant set.
 # Note: to find out who actually did have an entry, do a simple set operation for difference between set(pagelist) and set(starterlist)
 
@@ -28,12 +30,14 @@ def leftout(origlist, formattedlist, resultfile):
     /w/api.php?action=query&prop=info&format=json&titles=Narrrgh: if ["query"]["pages"] has a negative int like -1, -2, etc. as a key, and if a key within that dict has the value "missing" (value: ""), then the page is missing from enwiki
     TODO: use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once.
     Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
-    for x, elem in enumerate(formattedlist):
-        payload = dict(titles=elem)
-        r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=", params=payload)
-        if "-1" in r.json()["query"]["pages"].keys():
+    tocheck = chunkofnames(nametuples) # need to iterate on this - while?
+    headers = {'User-Agent': 'Sumana Harihareswara prototype (http://github.com/brainwane) using Python requests library'}
+    for x, elem in enumerate(tocheck):
+        payload = dict(titles=[x[1] for x in tocheck])
+        r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5", params=payload, headers=headers)
+        if "-1" in r.json()["query"]["pages"].keys(): # actually, any neg number
             if "missing" in r.json()["query"]["pages"]["-1"].keys():
-                outputfile((origlist[x]), resultfile)
+                outputfile((towrite[x]), resultfile)
 
 # spit out list of who is left out
 
