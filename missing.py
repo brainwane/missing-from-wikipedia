@@ -24,6 +24,12 @@ def massagenames(nlist):
     mlist= map(lambda elem:" ".join(elem.split(", ")[::-1]), nlist)
     return zip(nlist, mlist)
 
+def chunknames(tuplelist):
+    """a generator to yield up 50 name pairs at a time"""
+    while tuplelist:
+        yield tuplelist[:50]
+        tuplelist = tuplelist[50:]
+
 def leftout(nametuples, resultfile):
     """return list of people who don't have pages on English Wikipedia
 
@@ -35,12 +41,15 @@ def leftout(nametuples, resultfile):
     Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
 
     headers = {'User-Agent': 'missing-from-wikipedia project, using Python requests library'}
-    for namepair in nametuples:
-        payload = dict(titles=namepair[1])
+    g = chunknames(nametuples)
+    for chunk in g:
+        names = [x[1] for x in chunk]
+        payload = dict(titles="|".join(names))
         r = requests.get("http://en.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5", params=payload, headers=headers)
         for key in r.json()["query"]["pages"]:
             if "missing" in r.json()["query"]["pages"][key]:
-                outputfile(namepair[0], resultfile)
+                outputfile(r.json()["query"]["pages"][key]["title"], resultfile)
+        print("just ran a chunk, yo")
 
 # spit out list of who is left out
 
@@ -54,4 +63,4 @@ def run(listfile, resultfile):
     querynames = massagenames(listofnames)
     leftout(querynames, resultfile)
 
-run("namelist.txt", "unsung.txt")
+run("namelist.txt", "unsung2.txt")
