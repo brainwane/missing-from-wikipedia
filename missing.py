@@ -11,8 +11,7 @@
 import requests
 import codecs
 import sys
-
-(inputfile, wiki, outfile) = sys.argv[1:]
+from datetime import datetime
 
 def getnamelist(filename):
     """Open the file and turn it into a list split up by newlines."""
@@ -35,7 +34,7 @@ def chunknames(tuplelist):
         yield tuplelist[:50]
         tuplelist = tuplelist[50:]
 
-def leftout(nametuples, resultfile):
+def leftout(nametuples, wikipedia, resultfile):
     """Return list of people who don't have pages on the wiki.
 
     For each name, do a check to see whether the page exists on the wiki (as specified via command-line argument).
@@ -50,7 +49,7 @@ def leftout(nametuples, resultfile):
     for chunk in g:
         names = [x[1] for x in chunk]
         payload = dict(titles="|".join(names))
-        URI = "http://%s.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5" % wiki
+        URI = "http://%s.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5" % wikipedia
         r = requests.get(URI, params=payload, headers=headers)
         for key in r.json()["query"]["pages"]:
             if "missing" in r.json()["query"]["pages"][key]:
@@ -59,12 +58,21 @@ def leftout(nametuples, resultfile):
 
 # spit out list of who is left out
 
-def outputfile(input, fname):
+def outputfile(pagename, fname):
     with codecs.open(fname, encoding='utf-8', mode='a') as u:
-        u.write(input)
+        u.write(pagename)
         u.write("\n")
 
-def ratio(missed, orig):
+def nameoutputfile(startfile):
+    """Name the output file: the input filename plus timestamp.
+
+    Will not overwrite output file unless run more than once per second."""
+    base = startfile.split('.txt')[0]
+    now = datetime.utcnow().isoformat('-')
+    now = now[:19].replace(':','-')
+    return "%s-%s.txt" % (base, now)
+
+def ratio(missed, orig, origfile, wikipedia):
     """Tell the user the percentage of people who do not have wiki pages about them.
 
     Takes the resultfile from leftout and the list from getnamelist."""
@@ -72,14 +80,16 @@ def ratio(missed, orig):
         a = float(len(list(g)))
     b = len(orig)
     percentage = 100*(a/b)
-    print "%.0f percent of the people listed in %s do not have %s.wikipedia.org pages about them. \nChange that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias \nIn your language: https://www.wikidata.org/wiki/Q4656680\n" % (percentage, inputfile, wiki)
+    print "%s people (%.0f percent of the %s people listed in %s) do not have %s.wikipedia.org pages about them. \nChange that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias \nIn your language: https://www.wikidata.org/wiki/Q4656680\n" % (int(a), percentage, b, origfile, wikipedia)
 
-def run(listfile, resultfile):
-    listofnames = getnamelist(listfile)
+def run():
+    (inputfile, wiki) = sys.argv[1:]
+    out = nameoutputfile(inputfile)
+    listofnames = getnamelist(inputfile)
     querynames = massagenames(listofnames)
-    leftout(querynames, resultfile)
-    ratio(resultfile, listofnames)
+    leftout(querynames, wiki, out)
+    ratio(out, listofnames, inputfile, wiki)
 
 if __name__ == "__main__":
     """Run as: ./missing.py input-filename Wikipedia-code output-filename"""
-    run(inputfile, outfile)
+    run()
