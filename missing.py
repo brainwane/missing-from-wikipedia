@@ -65,14 +65,14 @@ def outputfile(input, fname):
         u.write("\n")
 
 def ratio(missed, orig):
-    """Tell the user the ratio of people who do not have wiki pages about them.
+    """Tell the user the percentage of people who do not have wiki pages about them.
 
     Takes the resultfile from leftout and the list from getnamelist."""
     with codecs.open(missed, encoding='utf-8', mode='r') as g:
-        a = len(list(g))
+        a = float(len(list(g)))
     b = len(orig)
-    ratio = float(a/b)
-    print "%s percent of the people listed in %s do not have %s.wikipedia.org pages about them. \nChange that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias \nIn your language: https://www.wikidata.org/wiki/Q4656680\n" % (a, inputfile, wiki)
+    percentage = 100*(a/b)
+    print "%.0f percent of the people listed in %s do not have %s.wikipedia.org pages about them. \nChange that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias \nIn your language: https://www.wikidata.org/wiki/Q4656680\n" % (percentage, inputfile, wiki)
 
 def run(listfile, resultfile):
     listofnames = getnamelist(listfile)
