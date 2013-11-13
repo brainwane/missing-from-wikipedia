@@ -72,7 +72,7 @@ def ratio(missed, orig):
         a = len(list(g))
     b = len(orig)
     ratio = float(a/b)
-    print "%s percent of the people listed in %s do not have %s.wikipedia.org pages about them. \nChange that: \nhttps://www.wikidata.org/wiki/Q4656680\nhttps://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias" % (a, inputfile, wiki)
+    print "%s percent of the people listed in %s do not have %s.wikipedia.org pages about them. \nChange that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias \nIn your language: https://www.wikidata.org/wiki/Q4656680\n" % (a, inputfile, wiki)
 
 def run(listfile, resultfile):
     listofnames = getnamelist(listfile)
