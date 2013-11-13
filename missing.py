@@ -64,10 +64,21 @@ def outputfile(input, fname):
         u.write(input)
         u.write("\n")
 
+def ratio(missed, orig):
+    """Tell the user the ratio of people who do not have wiki pages about them.
+
+    Takes the resultfile from leftout and the list from getnamelist."""
+    with codecs.open(missed, encoding='utf-8', mode='r') as g:
+        a = len(list(g))
+    b = len(orig)
+    ratio = float(a/b)
+    print "%s percent of the people listed in %s do not have %s.wikipedia.org pages about them. \nChange that: \nhttps://www.wikidata.org/wiki/Q4656680\nhttps://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias" % (a, inputfile, wiki)
+
 def run(listfile, resultfile):
     listofnames = getnamelist(listfile)
     querynames = massagenames(listofnames)
     leftout(querynames, resultfile)
+    ratio(resultfile, listofnames)
 
 if __name__ == "__main__":
     """Run as: ./missing.py input-filename Wikipedia-code output-filename"""
