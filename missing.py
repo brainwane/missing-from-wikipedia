@@ -72,7 +72,7 @@ def nameoutputfile(startfile):
     now = now[:19].replace(':','-')
     return "%s-%s.txt" % (base, now)
 
-def ratio(missed, orig, origfile, wikipedia):
+def ratio(missed, orig, origfile, wikipedia, out):
     """Tell the user the percentage of people who do not have wiki pages about them.
 
     Takes the resultfile from leftout and the list from getnamelist."""
@@ -80,7 +80,10 @@ def ratio(missed, orig, origfile, wikipedia):
         a = float(len(list(g)))
     b = len(orig)
     percentage = 100*(a/b)
-    print "%s people (%.0f percent of the %s people listed in %s) do not have %s.wikipedia.org pages about them. \nChange that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias \nIn your language: https://www.wikidata.org/wiki/Q4656680\n" % (int(a), percentage, b, origfile, wikipedia)
+    print """Your output file: %(outfile)s
+%(unsungnum)s people (%(pct).0f percent of the %(orignum)s people listed in %(infile)s) do not have %(lang)s.wikipedia.org pages about them.
+Change that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias
+In your language: https://www.wikidata.org/wiki/Q4656680\n""" % {'outfile':out, 'unsungnum':int(a), 'pct':percentage, 'orignum':b, 'infile':origfile, 'lang':wikipedia}
 
 def run():
     (inputfile, wiki) = sys.argv[1:]
@@ -88,7 +91,7 @@ def run():
     listofnames = getnamelist(inputfile)
     querynames = massagenames(listofnames)
     leftout(querynames, wiki, out)
-    ratio(out, listofnames, inputfile, wiki)
+    ratio(out, listofnames, inputfile, wiki, out)
 
 if __name__ == "__main__":
     """Run as: ./missing.py input-filename Wikipedia-code output-filename"""
