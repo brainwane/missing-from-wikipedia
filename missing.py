@@ -31,16 +31,18 @@ DEFAULT_HEADERS = {
 def getnamelist(filename):
     """Open the file and turn it into a list split up by newlines."""
     with codecs.open(filename, encoding='utf-8') as f:
-        fstr = f.read()
-        namelist = fstr.split("\n")
+        namelist = [line.strip('\n') for line in f]
     return namelist
 
 
 def massagenames(names):
     """Take list, make each name firstname lastname, then return a list of old-and-new tuples."""
-    massaged = map(lambda elem: " ".join(elem.split(", ")[::-1]), names)
-    massaged = [name[1].replace("- ", "-") for name in enumerate(massaged)]  # dealing with names with "al-" & similar strings
-    return massaged
+    def process_name(name):
+        switch_firstname_lastname = " ".join(name.split(", ")[::-1])
+        clean_hyphen_space = switch_firstname_lastname.replace("- ", "-")
+        return clean_hyphen_space
+    return [process_name(name) for name in names]
+
 
 def chunknames(names):
     """A generator to yield up CHUNK_SIZE name pairs at a time."""
