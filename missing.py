@@ -13,7 +13,6 @@
 # operation for difference between the original namelist and the file that
 # comes out at the end.
 
-# test names include: Mazari, Abu ʿAbd Allah Muhammad al- ; Mlapa III; Andrade, Mário Pinto de; Bayram al-Khaʾmis, Mohamed; Be’alu Girma; Bédié, Henri-Konan; Obama, Barack, Sr.; Okwei
 
 import requests
 import codecs
@@ -36,8 +35,12 @@ def getnamelist(filename):
 
 
 def massagenames(names):
-    """Take list, make each name firstname lastname, then return a list of old-and-new tuples."""
+    """Take list, make each name firstname lastname, then return list of processed names."""
     def process_name(name):
+        # special case for "Sr.", "III", and similar names
+        if name.count(", ") == 2:
+            parts = name.split(", ")
+            name = " ".join([parts[1], parts[0], parts[2]])
         switch_firstname_lastname = " ".join(name.split(", ")[::-1])
         clean_hyphen_space = switch_firstname_lastname.replace("- ", "-")
         return clean_hyphen_space
