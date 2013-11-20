@@ -34,3 +34,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Test files of input and output
+biographies*
+old-outputs
+originalnameTOC.txt
