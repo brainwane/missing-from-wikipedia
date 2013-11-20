@@ -7,7 +7,7 @@
 # and then spit out that resultant set to a file. The command-line options let
 # you specify the wiki to check and the filenames to read and write.
 
-# Please add your name to the User-Agent in the headers dict in 'leftout'.
+# Please add your name to the User-Agent in the headers dict in DEFAULT_HEADERS.
 
 # Note: to find out who actually did have an entry on the wiki, do a simple set
 # operation for difference between the original namelist and the file that
@@ -59,7 +59,7 @@ def leftout(massaged_names, wikipedia_language, resultfile):
     If ["query"]["pages"] has a negative int like -1, -2, etc. as a key, and if a key within that dict has the value "missing" (value: ""), then the page is missing from the wiki.
     We use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once.
     Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
-    
+
     for chunk in chunknames(massaged_names):
         payload = dict(titles="|".join(chunk))
         URI = "http://%s.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5" % wikipedia_language
@@ -103,11 +103,11 @@ def print_results(input_file, file_with_missing_entries, wikipedia_language, sta
 %(unsungnum)s people (%(pct).0f percent of the %(orignum)s people listed in %(infile)s) do not have %(lang)s.wikipedia.org pages about them.
 Change that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias
 In your language: https://www.wikidata.org/wiki/Q4656680\n""" % {
-        'outfile': file_with_missing_entries, 
-        'unsungnum': stats['missing'], 
-        'pct': stats['ratio'], 
-        'orignum': stats['original'], 
-        'infile': input_file, 
+        'outfile': file_with_missing_entries,
+        'unsungnum': stats['missing'],
+        'pct': stats['ratio'],
+        'orignum': stats['original'],
+        'infile': input_file,
         'lang': wikipedia_language}
 
 
