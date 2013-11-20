@@ -9,20 +9,20 @@ app = Flask(__name__)
 # leftout
 # return result to user in results.html form
 
-def onWikipedia(name):
-    names = [name]
+def onWikipedia(names):
+    names = names.split('\n')
     names = missing.massagenames(names)
     resultlist = missing.leftout(names, "en")
-    return resultlist != []
+    return resultlist
 
 @app.route('/index',methods=['GET','POST']) # form in template
 def index():
     if request.method == 'GET':
         return render_template('datainput.html')
     else:  # request was POST
-        nametocheck = request.form['pagename']
-        checkresult = onWikipedia(nametocheck)
-        return render_template('results.html', checkname=nametocheck, result=checkresult)
+        namestocheck = request.form['pagename']
+        checkresult = onWikipedia(namestocheck)
+        return render_template('results.html', checkname=namestocheck, result=checkresult)
 
 if __name__ == "__main__":
     app.run(debug=True)
