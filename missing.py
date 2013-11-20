@@ -14,8 +14,8 @@
 # comes out at the end.
 
 
-import requests
 import codecs
+import requests
 import sys
 from datetime import datetime
 
