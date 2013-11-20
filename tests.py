@@ -38,7 +38,7 @@ class page_existence_test(unittest.TestCase):
     # Check that we know an existing page exists.
     # leftout(testnames, en, testfile)
     # check testfile to see whether it has 0 names in it
-        notablepeople = ["Booker T. Washington"]
+        notablepeople = ["Booker T. Washington", "Angie Zapata"]
         testfile = "empty.txt"
         testresults = leftout(notablepeople, "en")
         outputfile(testresults, testfile)
