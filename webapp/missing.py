@@ -27,7 +27,7 @@ DEFAULT_HEADERS = {
 }
 
 
-def getnamelist(filename):
+def getnamefile(filename):
     """Open the file and turn it into a list split up by newlines."""
     with codecs.open(filename, encoding='utf-8') as f:
         namelist = [line.strip('\n') for line in f]
@@ -95,7 +95,7 @@ def generate_statistics(file_with_missing_entries, original_list_of_names):
     Tell user the percentage of people who do not have wiki pages about them.
     Suggest things to do about that.
 
-    Takes the resultfile from leftout and the list from getnamelist."""
+    Takes the resultfile from leftout and the list from getnamefile."""
     with codecs.open(file_with_missing_entries, encoding='utf-8', mode='r') as fd:
         number_of_missing_entries = len(list(fd))
 
@@ -120,7 +120,7 @@ In your language: https://www.wikidata.org/wiki/Q4656680\n""" % {
 def run():
     (inputfilename, wikipedia_language) = sys.argv[1:]
     outputfilename = nameoutputfile(inputfilename)
-    names = getnamelist(inputfilename)
+    names = getnamefile(inputfilename)
     querynames = massagenames(names)
     results = leftout(querynames, wikipedia_language)
     outputfile(results, outputfilename)

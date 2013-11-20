@@ -13,7 +13,7 @@ class input_processing_test(unittest.TestCase):
     # Test that the list splitting-up works.
         testfile = "namelist-sample.txt"
         expectedresult = [u"Mazari, Abu ʿAbd Allah Muhammad al-", u"Mlapa III", u"Andrade, Mário Pinto de", u"Bayram al-Khaʾmis, Mohamed", u"Be’alu Girma", u"Bédié, Henri-Konan", u"Obama, Barack, Sr.", u"Okwei", u"Marie Curie", u"Cleopatra", u"Gandhi, Indira", u"Madikizela-Mandela, Winnie"]
-        testresult = getnamelist(testfile)
+        testresult = getnamefile(testfile)
         self.assertEqual(testresult, expectedresult)
 
 
