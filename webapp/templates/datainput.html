@@ -1,0 +1,22 @@
+<!doctype html>
+<title>Missing from Wikipedia</title>
+<!--link rel=stylesheet type=text/css href='{{ url_for('static',filename='style_lulu.css')}}'-->
+<div class=page>
+  <h1>What pages are missing from Wikipedia?</h1>
+  <div class=metanav>
+
+    <h4>
+      Please type in a name and we'll check whether it's on Wikipedia.
+    </h4>
+
+    <form id='nametocheck' method='post' action='index' > <!--'index' is the @app.route -->
+      <p>
+    Name: <input type='text' name='pagename' />
+      </p>
+      <p>
+    <input type='submit' value='Submit' />
+      </p>
+    </form>
+
+  </div>
+</div>
