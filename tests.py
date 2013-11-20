@@ -28,7 +28,7 @@ class name_processing_test(unittest.TestCase):
     def test_three_item_reversal(self):
     # Test that special three-name items reverse appropriately.
         testname = ["Obama, Barack, Sr."]
-        expectedresult = ["Barack Obama, Sr."]
+        expectedresult = ["Barack Obama Sr."]
         testresult = massagenames(testname)
         self.assertEqual(testresult, expectedresult)
 
