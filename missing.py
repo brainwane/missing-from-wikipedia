@@ -54,7 +54,7 @@ def chunknames(names):
         names = names[CHUNK_SIZE:]
 
 
-def leftout(massaged_names, wikipedia_language, resultfile):
+def leftout(massaged_names, wikipedia_language):
     """Return list of people who don't have pages on the wiki.
 
     For each name, do a check to see whether the page exists on the wiki (as specified via command-line argument).
@@ -64,18 +64,20 @@ def leftout(massaged_names, wikipedia_language, resultfile):
     We use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once.
     Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
 
+    resultlist = []
     for chunk in chunknames(massaged_names):
         payload = dict(titles="|".join(chunk))
         URI = "http://%s.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5" % wikipedia_language
         request = requests.get(URI, params=payload, headers=DEFAULT_HEADERS)
         for key in request.json()["query"]["pages"]:
             if "missing" in request.json()["query"]["pages"][key]:
-                outputfile(request.json()["query"]["pages"][key]["title"], resultfile)
+                resultlist.append(request.json()["query"]["pages"][key]["title"])
+    return resultlist
 
 
-def outputfile(pagename, filename):
+def outputfile(resultlist, filename):
     with codecs.open(filename, encoding='utf-8', mode='a') as out_fd:
-        out_fd.write("%s\n" % pagename)
+        [out_fd.write("%s\n" % pagename) for pagename in resultlist]
 
 
 def nameoutputfile(name):
@@ -120,7 +122,8 @@ def run():
     outputfilename = nameoutputfile(inputfilename)
     names = getnamelist(inputfilename)
     querynames = massagenames(names)
-    leftout(querynames, wikipedia_language, outputfilename)
+    results = leftout(querynames, wikipedia_language)
+    outputfile(results, outputfilename)
     stats = generate_statistics(outputfilename, names)
     print_results(inputfilename, outputfilename, wikipedia_language, stats)
 

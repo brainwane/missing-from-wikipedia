@@ -38,7 +38,13 @@ class page_existence_test(unittest.TestCase):
     # Check that we know an existing page exists.
     # leftout(testnames, en, testfile)
     # check testfile to see whether it has 0 names in it
-        pass
+        notablepeople = ["Booker T. Washington"]
+        testfile = "empty.txt"
+        testresults = leftout(notablepeople, "en")
+        outputfile(testresults, testfile)
+        with codecs.open(testfile, encoding='utf-8', mode='r') as f:
+            length = len(f.read())
+        self.assertEqual(length, 0)
 
     def test_nonexistent_page(self):
     # Check that we know a nonexistent page is nonexistent.
