@@ -56,9 +56,11 @@ class page_existence_test(unittest.TestCase):
             testresult = f.read()
         self.assertEqual(testresult, "NEVEREXISTS\n")
 
+
 class stats_test(unittest.TestCase):
     def test_sample_file(self):
         pass
+
 
 def main():
     unittest.main()

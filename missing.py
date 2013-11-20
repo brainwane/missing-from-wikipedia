@@ -21,7 +21,7 @@ from datetime import datetime
 
 
 # Constants
-CHUNK_SIZE = 50 # Can send up to 50 titles in 1 API query, at least on English Wikipedia.
+CHUNK_SIZE = 50  # Can send up to 50 titles in 1 API query, at least on English Wikipedia.
 DEFAULT_HEADERS = {
     'User-Agent': 'missing-from-wikipedia project (https://github.com/brainwane/missing-from-wikipedia/), using Python requests library'
 }
