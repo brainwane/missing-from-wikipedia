@@ -25,13 +25,28 @@ class name_processing_test(unittest.TestCase):
         testresult = massagenames(testnames)
         self.assertEqual(testresult, expectedresult)
 
-    # def test_three_item_reversal(self):
-    # # Test that special three-name items reverse appropriately.
-    #     testname = ["Obama, Barack, Sr."]
-    #     expectedresult = ["Barack Obama, Sr."]
-    #     testresult = massagenames(testname)
-    #     self.assertEqual(testresult, expectedresult)
+    def test_three_item_reversal(self):
+    # Test that special three-name items reverse appropriately.
+        testname = ["Obama, Barack, Sr."]
+        expectedresult = ["Barack Obama, Sr."]
+        testresult = massagenames(testname)
+        self.assertEqual(testresult, expectedresult)
 
+
+class page_existence_test(unittest.TestCase):
+    def test_existing_page(self):
+    # Check that we know an existing page exists.
+    # leftout(testnames, en, testfile)
+    # check testfile to see whether it has 0 names in it
+        pass
+
+    def test_nonexistent_page(self):
+    # Check that we know a nonexistent page is nonexistent.
+        pass
+
+class stats_test(unittest.TestCase):
+    def test_sample_file(self):
+        pass
 
 def main():
     unittest.main()

@@ -13,7 +13,6 @@
 # operation for difference between the original namelist and the file that
 # comes out at the end.
 
-# test names include: Mazari, Abu ʿAbd Allah Muhammad al- ; Mlapa III; Andrade, Mário Pinto de; Bayram al-Khaʾmis, Mohamed; Be’alu Girma; Bédié, Henri-Konan; Obama, Barack, Sr.; Okwei
 
 import requests
 import codecs
