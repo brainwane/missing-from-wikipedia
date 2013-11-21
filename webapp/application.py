@@ -21,8 +21,7 @@ def index():
     else:  # request was POST
         namestocheck, language = request.form['pagename'], request.form['langname']
         orig, checkresult, statistics = onWikipedia(namestocheck, language)
-        ratio, original, missing = statistics["ratio"], statistics["original"], statistics["missing"]
-        return render_template('results.html', checkname=orig, result=checkresult, ratio=ratio, original=original, missing=missing)
+        return render_template('results.html', checkname=orig, result=checkresult, stats=statistics)
 
 if __name__ == "__main__":
     app.run(debug=True)
