@@ -38,36 +38,36 @@ class page_existence_test(unittest.TestCase):
 
     def setUp(self):
         self.notablepeople = ["Booker T. Washington", "Angie Zapata"]
-        self.testfile = "empty.txt"
         self.imaginarypeople = ["NEVEREXISTS"]
 
     def test_existing_page(self):
     # Check that we know an existing page exists.
-    # leftout(testnames, en, testfile)
-    # check testfile to see whether it has 0 names in it
+    # Resulting list should have 0 names in it
         testresults = leftout(self.notablepeople, "en")
-        outputfile(testresults, self.testfile)
-        with codecs.open(self.testfile, encoding='utf-8', mode='r') as f:
-            testresultlength = len(f.read())
-        self.assertEqual(testresultlength, 0)
+        self.assertEqual(len(testresults), 0)
 
     def test_nonexistent_page(self):
     # Check that we know a nonexistent page is nonexistent.
         testresults = leftout(self.imaginarypeople, "en")
-        outputfile(testresults, self.testfile)
-        with codecs.open(self.testfile, encoding='utf-8', mode='r') as f:
-            testresult = f.read()
-        self.assertEqual(testresult, "NEVEREXISTS\n")
+        self.assertEqual(testresults, ["NEVEREXISTS"])
 
-    def mixed_people(self):
-        pass
-
-    def tearDown(self):
-        os.remove(self.testfile)
+    def test_mixed_people(self):
+    # Check a mixed group; should result in ONLY the nonexistent page.
+        people = self.imaginarypeople + self.notablepeople
+        testresults = leftout(people, "en")
+        self.assertEqual(testresults, ["NEVEREXISTS"])
 
 class stats_test(unittest.TestCase):
-    def test_sample_file(self):
-        pass
+    def setUp(self):
+        self.testfile = "namelist-sample.txt"
+
+    def test_percentage(self):
+        expectedresult = 50
+        names = getnamefile(self.testfile)
+        querynames = massagenames(names)
+        results = leftout(querynames, "en")
+        testresult = generate_statistics(results, names)
+        self.assertEqual(testresult["ratio"], expectedresult)
 
 
 def main():

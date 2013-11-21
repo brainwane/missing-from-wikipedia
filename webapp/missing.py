@@ -89,23 +89,21 @@ def nameoutputfile(name):
     return "%s-%s.%s" % (name[:pos], now, name[pos+1:]) if pos > 0 else "%s-%s" % (name, now)
 
 
-def generate_statistics(file_with_missing_entries, original_list_of_names):
+def generate_statistics(resultlist, original_list_of_names):
     """Command-line output with stats and call to action.
 
     Tell user the percentage of people who do not have wiki pages about them.
     Suggest things to do about that.
 
     Takes the resultfile from leftout and the list from getnamefile."""
-    with codecs.open(file_with_missing_entries, encoding='utf-8', mode='r') as fd:
-        number_of_missing_entries = len(list(fd))
-
+    number_of_missing_entries = len(resultlist)
     number_of_original_entries = len(original_list_of_names)
     percentage = 100 * (float(number_of_missing_entries) / float(number_of_original_entries))
     return {'ratio': percentage, 'original': number_of_original_entries, 'missing': number_of_missing_entries}
 
 
-def print_results(input_file, file_with_missing_entries, wikipedia_language, stats):
-    print """Your output file: %(outfile)s
+def stat_results(input_file, file_with_missing_entries, wikipedia_language, stats):
+    return """Your output file: %(outfile)s
 %(unsungnum)s people (%(pct).0f percent of the %(orignum)s people listed in %(infile)s) do not have %(lang)s.wikipedia.org pages about them.
 Change that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias
 In your language: https://www.wikidata.org/wiki/Q4656680\n""" % {
@@ -124,8 +122,8 @@ def run():
     querynames = massagenames(names)
     results = leftout(querynames, wikipedia_language)
     outputfile(results, outputfilename)
-    stats = generate_statistics(outputfilename, names)
-    print_results(inputfilename, outputfilename, wikipedia_language, stats)
+    stats = generate_statistics(results, names)
+    print(stat_results(inputfilename, outputfilename, wikipedia_language, stats))
 
 
 if __name__ == "__main__":
