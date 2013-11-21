@@ -4,6 +4,7 @@
 # Licensed under the GPL - see LICENSE
 
 
+import os
 import unittest
 from missing import *
 
@@ -34,28 +35,35 @@ class name_processing_test(unittest.TestCase):
 
 
 class page_existence_test(unittest.TestCase):
+
+    def setUp(self):
+        self.notablepeople = ["Booker T. Washington", "Angie Zapata"]
+        self.testfile = "empty.txt"
+        self.imaginarypeople = ["NEVEREXISTS"]
+
     def test_existing_page(self):
     # Check that we know an existing page exists.
     # leftout(testnames, en, testfile)
     # check testfile to see whether it has 0 names in it
-        notablepeople = ["Booker T. Washington", "Angie Zapata"]
-        testfile = "empty.txt"
-        testresults = leftout(notablepeople, "en")
-        outputfile(testresults, testfile)
-        with codecs.open(testfile, encoding='utf-8', mode='r') as f:
+        testresults = leftout(self.notablepeople, "en")
+        outputfile(testresults, self.testfile)
+        with codecs.open(self.testfile, encoding='utf-8', mode='r') as f:
             testresultlength = len(f.read())
         self.assertEqual(testresultlength, 0)
 
     def test_nonexistent_page(self):
     # Check that we know a nonexistent page is nonexistent.
-        imaginarypeople = ["NEVEREXISTS"]
-        testfile = "empty.txt"
-        testresults = leftout(imaginarypeople, "en")
-        outputfile(testresults, testfile)
-        with codecs.open(testfile, encoding='utf-8', mode='r') as f:
+        testresults = leftout(self.imaginarypeople, "en")
+        outputfile(testresults, self.testfile)
+        with codecs.open(self.testfile, encoding='utf-8', mode='r') as f:
             testresult = f.read()
         self.assertEqual(testresult, "NEVEREXISTS\n")
 
+    def mixed_people(self):
+        pass
+
+    def tearDown(self):
+        os.remove(self.testfile)
 
 class stats_test(unittest.TestCase):
     def test_sample_file(self):
