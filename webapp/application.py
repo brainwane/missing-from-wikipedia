@@ -11,7 +11,8 @@ def onWikipedia(names, lang):
     names = names.split('\r\n')
     names = missing.massagenames(names)
     resultlist = missing.leftout(names, lang)
-    return names, resultlist
+    stats = missing.generate_statistics(resultlist, names)
+    return names, resultlist, stats
 
 @app.route('/index',methods=['GET','POST']) # form in template
 def index():
@@ -19,8 +20,9 @@ def index():
         return render_template('datainput.html')
     else:  # request was POST
         namestocheck, language = request.form['pagename'], request.form['langname']
-        orig, checkresult = onWikipedia(namestocheck, language)
-        return render_template('results.html', checkname=orig, result=checkresult)
+        orig, checkresult, statistics = onWikipedia(namestocheck, language)
+        ratio, original, missing = statistics["ratio"], statistics["original"], statistics["missing"]
+        return render_template('results.html', checkname=orig, result=checkresult, ratio=ratio, original=original, missing=missing)
 
 if __name__ == "__main__":
     app.run(debug=True)
