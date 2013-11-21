@@ -12,9 +12,11 @@
     You asked for us to check {{checkname[0]}} to {{checkname[-1]}}.
 <p>
     Of those {{stats["original"]}} names, the number missing from Wikipedia: {{stats["missing"]}}. So that means {{stats["ratio"]}}% are missing.
-      The complete list:<p>
-    {{result}}
+      The complete list:<p><ol>
 
-
+    {% for item in result %}
+        <li><a href="http://en.wikipedia.org/w/index.php?title={{item}}&action=edit">{{item}}</a></li>
+    {% endfor %}
+</ol>
   </div>
 </div>
