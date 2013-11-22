@@ -30,9 +30,9 @@ def index():
             print "file upload"
             namefile, language = request.files['fileofnames'], request.form['langname']
             namestocheck = missing.getnamefile(namefile)
-        # orig, checkresult, statistics = onWikipedia(namestocheck, language)
-        # return render_template('results.html', checkname=orig, result=checkresult, stats=statistics)
-        return render_template('results.html', checkname=["yo"], result=["yo"], stats={"original":5,"ratio":90.0,"missing":3})
+        orig, checkresult, statistics = onWikipedia(namestocheck, language)
+        return render_template('results.html', checkname=orig, result=checkresult, stats=statistics)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
