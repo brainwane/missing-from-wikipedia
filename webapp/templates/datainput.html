@@ -1,18 +1,32 @@
 <!doctype html>
+<head>
 <title>Missing from Wikipedia</title>
-<!--link rel=stylesheet type=text/css href='{{ url_for('static',filename='style_lulu.css')}}'-->
-<div class=page>
-  <h1>What pages are missing from Wikipedia?</h1>
-  <div class=metanav>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel=stylesheet type=text/css href='{{ url_for('static',filename='css/my.css')}}'>
+</head>
+<body>  <h1>What pages are missing from Wikipedia?</h1>
+  <div class="instructions" >
 
-    <h4>
-      Please type in a name and we'll check whether it's on Wikipedia.
-    </h4>
+      Please type in names or upload a file of names, and we'll check whether they're on Wikipedia.</div>
 
+<div class="dataworkflow">
     <form id='nametocheck' method='post' action='index' > <!--'index' is the @app.route -->
-      <p>
-    Names (one per line): <textarea name='pagename' ></textarea>
+      <p class="textnames">
+    Names (one per line): <textarea name='pagename' ></textarea> Wikipedia: <select name='langname'>
+  <option value="en">English</option>
+  <option value="de">German</option>
+  <option value="fr">French</option>
+  <option value="es">Spanish</option>
+  <option value="ta">Tamil</option>
+  <option value="he">Hebrew</option>
+      </select>
+    <input type='submit' value='Submit' />
       </p>
+    </form>
+
+    <form id='fileofnames' method='post' action='index' enctype=multipart/form-data >
+      File, please! <input type='file' name='fileofnames'></input>
+
     Wikipedia: <select name='langname'>
   <option value="en">English</option>
   <option value="de">German</option>
@@ -21,10 +35,9 @@
   <option value="ta">Tamil</option>
   <option value="he">Hebrew</option>
       </select>
-      <p>
-    <input type='submit' value='Submit' />
-      </p>
-    </form>
 
+      <input type='submit' value='Submit!!!!' />
+      </form>
   </div>
-</div>
+
+</body>
