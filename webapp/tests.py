@@ -59,16 +59,45 @@ class page_existence_test(unittest.TestCase):
 
 class stats_test(unittest.TestCase):
     def setUp(self):
-        self.testfile = "namelist-sample.txt"
+        self.testinfile = "namelist-sample.txt"
+        self.expectedresult = 50
+        self.names = getnamefile(self.testinfile)
+        self.querynames = massagenames(self.names)
+        self.results = leftout(self.querynames, "en")
+        self.testresult = generate_statistics(self.results, self.names)
+        self.testoutfilename = "testresulttodelete.txt"
+        outputfile(self.results, self.testoutfilename)
 
     def test_percentage(self):
-        expectedresult = 50
-        names = getnamefile(self.testfile)
-        querynames = massagenames(names)
-        results = leftout(querynames, "en")
-        testresult = generate_statistics(results, names)
-        self.assertEqual(testresult["ratio"], expectedresult)
+        self.assertEqual(self.testresult["ratio"], self.expectedresult)
 
+    def test_stat_results(self):
+        expectedresult = """Your output file: testresulttodelete.txt
+6 people (50 percent of the 12 people listed in namelist-sample.txt) do not have en.wikipedia.org pages about them.
+Change that: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Countering_systemic_bias
+In your language: https://www.wikidata.org/wiki/Q4656680\n"""
+        teststats = stat_results(self.testinfile, self.testoutfilename, "en", self.testresult)
+        self.assertEqual(teststats, expectedresult)
+
+    def tearDown(self):
+        os.remove(self.testoutfilename)
+
+class file_test(unittest.TestCase):
+    def setUp(self):
+        self.testfile = "testoffilewrite.txt"
+        self.testlist = ["hey there"]
+        outputfile(self.testlist, self.testfile)
+
+    def test_outputfile(self):
+        with codecs.open(self.testfile, encoding='utf-8', mode='r') as f:
+            testresult = f.read()
+        self.assertEqual(testresult, u"hey there\n")
+
+    def test_filewritename(self):
+        pass
+
+    def tearDown(self):
+        os.remove(self.testfile)
 
 def main():
     unittest.main()
