@@ -6,6 +6,7 @@
 
 import os
 import unittest
+import time
 from missing import *
 
 
@@ -57,6 +58,7 @@ class page_existence_test(unittest.TestCase):
         testresults = leftout(people, "en")
         self.assertEqual(testresults, ["NEVEREXISTS"])
 
+
 class stats_test(unittest.TestCase):
     def setUp(self):
         self.testinfile = "namelist-sample.txt"
@@ -82,6 +84,7 @@ In your language: https://www.wikidata.org/wiki/Q4656680\n"""
     def tearDown(self):
         os.remove(self.testoutfilename)
 
+
 class file_test(unittest.TestCase):
     def setUp(self):
         self.testfile = "testoffilewrite.txt"
@@ -93,11 +96,31 @@ class file_test(unittest.TestCase):
             testresult = f.read()
         self.assertEqual(testresult, u"hey there\n")
 
-    def test_filewritename(self):
-        pass
+    def test_nameoutputfile(self):
+        testresult1 = nameoutputfile(self.testfile)
+        time.sleep(1)
+        testresult2 = nameoutputfile(self.testfile)
+        self.assertNotEqual(testresult1, testresult2)
+        self.assertIn(self.testfile[:15], testresult1)
+        self.assertIn(self.testfile[16:], testresult1)
+        weirdname = "bleeee"
+        testresult3 = nameoutputfile(weirdname)
+        self.assertNotIn(".", testresult3)
+        self.assertEqual(testresult3[:7], "bleeee-")
 
     def tearDown(self):
         os.remove(self.testfile)
+
+class integration_test(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_run_function(self):
+        # need testdata file and
+        pass
+
+    def tearDown(self):
+        pass
 
 def main():
     unittest.main()
