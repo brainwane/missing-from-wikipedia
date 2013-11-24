@@ -37,13 +37,20 @@ def getnamelist(filename):
 def massagenames(names):
     """Take list, make each name firstname lastname, then return list of processed names."""
     def process_name(name):
-        # special case for "Sr.", "III", and similar names
-        if name.count(", ") == 2:
-            parts = name.split(", ")
-            name = " ".join([parts[1], parts[0], parts[2]])
-        switch_firstname_lastname = " ".join(name.split(", ")[::-1])
-        clean_hyphen_space = switch_firstname_lastname.replace("- ", "-")
-        return clean_hyphen_space
+        parts = name.split(", ")
+        # flip first and last names
+        if (len(parts) > 1):
+            parts[0], parts[1] = parts[1], parts[0]
+
+        # special case with "lastname, firstname, suffix"
+        # fix to "firstname lastname, suffix"
+        if (len(parts) == 3):
+            final = "%s %s, %s" % (parts[0], parts[1], parts[2])
+        else:
+            final = " ".join(parts)
+        # replace hyphens
+        fix_hyphens = final.replace("- ", "-")
+        return fix_hyphens
     return [process_name(name) for name in names]
 
 
