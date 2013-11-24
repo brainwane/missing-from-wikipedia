@@ -21,7 +21,7 @@ class input_processing_test(unittest.TestCase):
 
 class name_processing_test(unittest.TestCase):
     def test_name_reversal_hyphenation(self):
-    # Test that names of 1 or 2 items reverse and remove hyphen spaces properly.
+    # Test that names of 1 or 2 items reverse & remove hyphen spaces properly.
         testnames = ["Mazari, Abu ʿAbd Allah Muhammad al-", "Mlapa III", "Andrade, Mário Pinto de", "Bayram al-Khaʾmis, Mohamed", "Be’alu Girma", "Bédié, Henri-Konan", "Okwei"]
         expectedresult = ["Abu ʿAbd Allah Muhammad al-Mazari", "Mlapa III", "Mário Pinto de Andrade", "Mohamed Bayram al-Khaʾmis", "Be’alu Girma", "Henri-Konan Bédié", "Okwei"]
         testresult = massagenames(testnames)
@@ -111,6 +111,7 @@ class file_test(unittest.TestCase):
     def tearDown(self):
         os.remove(self.testfile)
 
+
 class integration_test(unittest.TestCase):
     def setUp(self):
         pass
@@ -121,6 +122,7 @@ class integration_test(unittest.TestCase):
 
     def tearDown(self):
         pass
+
 
 def main():
     unittest.main()
