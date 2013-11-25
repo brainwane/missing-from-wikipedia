@@ -1,12 +1,62 @@
+
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+}
+
 body {
 /*
 built-in HTML tag body
 */
-background-color: #eeeeee;
-font-family: Liberation, sans-serif; /* figure out floss version*/
-color: #111111;
-width: 100%;
-    }
+  width: 100%;
+  line-height: 1.428571429;
+  color: #333333;
+  background-color: #feafff;
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  font-family: inherit;
+  font-size: 100%;
+}
+
+button,
+input {
+  line-height: normal;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: button;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 
 .textnames { 
 /*
