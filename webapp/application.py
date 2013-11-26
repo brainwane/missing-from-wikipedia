@@ -17,7 +17,7 @@ def onWikipedia(names, lang):
 @app.route('/index',methods=['GET','POST']) # form in template
 def index():
     if request.method == 'GET':
-        print "we are in get"
+        print "we did a get"
         return render_template('datainput.html')
     else:  # request was POST
         print "we did a POST!"
@@ -28,8 +28,6 @@ def index():
             namefilestorage, language = request.files[('fileofnames')].stream, request.form['langname']
             namestocheck = [line.strip() for line in namefilestorage]
         orig, checkresult, statistics = onWikipedia(namestocheck, language)
-        import pdb
-        pdb.set_trace()
         return render_template('results.html', checkname=orig, result=checkresult, stats=statistics)
 
 
