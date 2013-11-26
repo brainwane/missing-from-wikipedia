@@ -14,6 +14,15 @@ def onWikipedia(names, lang):
     stats = missing.generate_statistics(resultlist, names)
     return names, resultlist, stats
 
+def askedToCheck(listofstrings):
+    l = len(listofstrings)
+    if l == 1:
+        return listofstrings[0]
+    elif l <=4:
+        return ", ".join(listofstrings)
+    elif l > 4:
+        return "%s phrases: %s, %s... %s" % (l, listofstrings[0], listofstrings[1], listofstrings[-1])
+
 @app.route('/index',methods=['GET','POST']) # form in template
 def index():
     if request.method == 'GET':
@@ -28,7 +37,7 @@ def index():
             namefilestorage, language = request.files[('fileofnames')].stream, request.form['langname']
             namestocheck = [line.strip() for line in namefilestorage]
         orig, checkresult, statistics = onWikipedia(namestocheck, language)
-        return render_template('results.html', checkname=orig, result=checkresult, stats=statistics)
+        return render_template('results.html', checkname=askedToCheck(orig), result=checkresult, stats=statistics)
 
 
 if __name__ == "__main__":
