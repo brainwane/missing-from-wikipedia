@@ -21,7 +21,7 @@ def askedToCheck(listofstrings):
     elif l <=4:
         return ", ".join(listofstrings)
     elif l > 4:
-        return "%s phrases: %s, %s... %s" % (l, listofstrings[0], listofstrings[1], listofstrings[-1])
+        return "%s phrases: %s, %s... %s, %s" % (l, listofstrings[0], listofstrings[1], listofstrings[-2], listofstrings[-1])
 
 @app.route('/index',methods=['GET','POST']) # form in template
 def index():
