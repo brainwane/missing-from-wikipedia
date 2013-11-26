@@ -11,15 +11,15 @@ built-in HTML tag body
 */
   width: 80%;
   line-height: 1.428571429;
-  color: #333333;
-  background-color: #feafff;
+  color: #331133;
+  background-color: #ffaff3;
 }
 
 button,
 input,
 select,
 textarea {
-  margin: 0;
+  margin: 10;
   font-family: inherit;
   font-size: 100%;
 }
@@ -64,18 +64,24 @@ user-defined CLASS in a tag, e.g., p
 */
     }
 
+.instructions {
+background-color: #efefee;
+width: 50%;
+color: #222222;
+}
+
 #nametocheck {
 /*
 unique ID of a tag, such as form id or div id or in a headline
 */
+color: #111221;
+background-color: #eccaae;
     }
 
-.instructions {
-background-color: #ffffff;
-width: 70%;
-color: #222222;
-}
-
-.dataworkflow {
-
-}
+#fileofnames {
+/*
+unique ID of a tag, such as form id or div id or in a headline
+*/
+color: #111221;
+background-color: #bbcaae;
+    }
