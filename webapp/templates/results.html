@@ -1,19 +1,20 @@
 <!doctype html>
+<head>
 <title>Missing from Wikipedia</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel=stylesheet type=text/css href='{{ url_for('static',filename='css/my.css')}}'>
 <link rel="shortcut icon" href="{{ url_for('static', filename='ico/favicon.ico') }}">
-<div class=page>
+</head>
+<body>
   <h1>What pages are missing from Wikipedia?</h1>
-  <div class=metanav>
 
-    <h4>
-      What's missing?
-    </h4>
 
+  <div class="statistics">
     You asked for us to check {{checkname[0].decode("utf-8")}} to {{checkname[-1].decode("utf-8")}}.
 <p>
     Of those {{stats["original"]}} names, the number missing from Wikipedia: {{stats["missing"]}}. So that means {{stats["ratio"]}}% are missing.
+</div>
+  <div class="missingnames">
       The complete list:<p><ol>
 
     {% for item in result %}
@@ -21,4 +22,5 @@
     {% endfor %}
 </ol>
   </div>
-</div>
+</body>
+</html>
