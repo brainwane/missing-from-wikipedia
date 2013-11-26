@@ -9,7 +9,7 @@ body {
 /*
 built-in HTML tag body
 */
-  width: 100%;
+  width: 80%;
   line-height: 1.428571429;
   color: #333333;
   background-color: #feafff;
@@ -44,8 +44,8 @@ input[type="submit"] {
 
 button::-moz-focus-inner,
 input::-moz-focus-inner {
-  padding: 0;
-  border: 0;
+  padding: 1;
+  border: 1;
 }
 
 textarea {
@@ -55,7 +55,7 @@ textarea {
 
 table {
   border-collapse: collapse;
-  border-spacing: 0;
+  border-spacing: 1;
 }
 
 .textnames { 
