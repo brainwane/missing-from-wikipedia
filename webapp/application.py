@@ -31,11 +31,11 @@ def index():
     else:  # request was POST
         print "we did a POST!"
         if 'pagename' in request.form:
-            namestocheck, language = request.form['pagename'], request.form['langname']
+            namestocheck, language = request.form['pagename'].decode('utf-8'), request.form['langname']
             namestocheck = namestocheck.split('\r\n')
         else:
             namefilestorage, language = request.files[('fileofnames')].stream, request.form['langname']
-            namestocheck = [line.strip() for line in namefilestorage]
+            namestocheck = [line.strip('\n').decode('utf-8') for line in namefilestorage]
         orig, checkresult, statistics = onWikipedia(namestocheck, language)
         return render_template('results.html', checkname=askedToCheck(orig), result=checkresult, stats=statistics)
 
