@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request
 import missing
 
@@ -20,17 +21,15 @@ def index():
         return render_template('datainput.html')
     else:  # request was POST
         print "we did a POST!"
-        print "request.form is " + str(request.form)
-        print "request.files is " + str(request.files)
-        if request.form['pagename']:
-            print "they typed in a list of names"
+        if 'pagename' in request.form:
             namestocheck, language = request.form['pagename'], request.form['langname']
             namestocheck = namestocheck.split('\r\n')
         else:
-            print "file upload"
-            namefile, language = request.files['fileofnames'], request.form['langname']
-            namestocheck = missing.getnamefile(namefile)
+            namefilestorage, language = request.files[('fileofnames')].stream, request.form['langname']
+            namestocheck = [line.strip() for line in namefilestorage]
         orig, checkresult, statistics = onWikipedia(namestocheck, language)
+        import pdb
+        pdb.set_trace()
         return render_template('results.html', checkname=orig, result=checkresult, stats=statistics)
 
 
