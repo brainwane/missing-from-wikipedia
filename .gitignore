@@ -1,4 +1,6 @@
-*.py[cod]
+*.py[cod~]
+*.css~
+*.html~
 
 # C extensions
 *.so
@@ -26,6 +28,7 @@ pip-log.txt
 .coverage
 .tox
 nosetests.xml
+htmlcov
 
 # Translations
 *.mo
@@ -39,3 +42,5 @@ nosetests.xml
 biographies*
 old-outputs
 originalnameTOC.txt
+empty.txt
+namelist-sample-*
