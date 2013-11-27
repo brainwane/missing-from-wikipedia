@@ -8,22 +8,25 @@ app = Flask(__name__)
 # run massagenames (implicitly chunks into 50 titles per request) and leftout
 # return result to user in results.html form
 
+
 def onWikipedia(names, lang):
     names = missing.massagenames(names)
     resultlist = missing.leftout(names, lang)
     stats = missing.generate_statistics(resultlist, names)
     return names, resultlist, stats
 
+
 def askedToCheck(listofstrings):
     l = len(listofstrings)
     if l == 1:
         return listofstrings[0]
-    elif l <=4:
+    elif l <= 4:
         return ", ".join(listofstrings)
     elif l > 4:
         return "%s phrases: %s, %s... %s, %s" % (l, listofstrings[0], listofstrings[1], listofstrings[-2], listofstrings[-1])
 
-@app.route('/index',methods=['GET','POST']) # form in template
+
+@app.route('/index', methods=['GET', 'POST'])  # form in template
 def index():
     if request.method == 'GET':
         print "we did a get"
