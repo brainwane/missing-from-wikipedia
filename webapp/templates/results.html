@@ -12,13 +12,13 @@
   <div class="statistics">
     You asked for us to check <i>{{checkname}}</i>.
 <p>
-    Of those {{stats["original"]}} names, the number missing from Wikipedia: {{stats["missing"]}}. So that means {{stats["ratio"]}}% are missing.
+    Of those {{stats["original"]}} names, the number missing from {{target_lang}}.wikipedia.org: {{stats["missing"]}}. So that means {{stats["ratio"]}}% are missing.
 </div>
   <div id="missingnames">
       The complete list:<p><ol>
 
     {% for item in result %}
-        <li><a href="http://en.wikipedia.org/w/index.php?title={{item}}&action=edit">{{item}}</a></li>
+        <li><a href="http://{{target_lang}}.wikipedia.org/w/index.php?title={{item}}&action=edit">{{item}}</a></li>
     {% endfor %}
 </ol>
   </div>

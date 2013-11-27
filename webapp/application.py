@@ -37,7 +37,7 @@ def index():
             namefilestorage, language = request.files[('fileofnames')].stream, request.form['langname']
             namestocheck = [line.strip('\n').decode('utf-8') for line in namefilestorage]
         orig, checkresult, statistics = onWikipedia(namestocheck, language)
-        return render_template('results.html', checkname=askedToCheck(orig), result=checkresult, stats=statistics)
+        return render_template('results.html', checkname=askedToCheck(orig), result=checkresult, stats=statistics, target_lang=language)
 
 
 if __name__ == "__main__":
