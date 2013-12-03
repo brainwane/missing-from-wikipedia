@@ -18,6 +18,7 @@ import codecs
 import requests
 import sys
 from datetime import datetime
+import MySQLdb
 
 
 # Constants
@@ -65,20 +66,21 @@ def leftout(massaged_names, wikipedia_language):
     """Return list of people who don't have pages on the wiki.
 
     For each name, do a check to see whether the page exists on the wiki (as specified via command-line argument).
-       Sample title that does not exist: Narrrgh
-       API call goes to: /w/api.php?action=query&prop=info&format=json&titles=Narrrgh&redirects=&maxlag=5
-    If ["query"]["pages"] has a negative int like -1, -2, etc. as a key, and if a key within that dict has the value "missing" (value: ""), then the page is missing from the wiki.
-    We use pipes, e.g. Narrgh|Call Me Maybe|NEVEREXISTS in titles= , to make multiple queries at once.
-    Currently accepts redirects as meaning the page exists. TODO: if the redirect is to a page that is NOT a biography (e.g., it redirects to the page for a war), then count that person as unsung."""
 
+    Uses a direct MySQL check on the replicated database.
+"""
+
+
+    db = MySQLdb.connect(read_default_file='~/replica.my.cnf',
+                         host=wikipedia_language+"wiki.labsdb",
+                         db=wikipedia_language+"wiki_p")
+    cur = db.cursor()
     resultlist = []
-    for chunk in chunknames(massaged_names):
-        payload = dict(titles="|".join(chunk))
-        URI = "http://%s.wikipedia.org/w/api.php?action=query&prop=info&format=json&redirects=&maxlag=5" % wikipedia_language
-        request = requests.get(URI, params=payload, headers=DEFAULT_HEADERS)
-        for key in request.json()["query"]["pages"]:
-            if "missing" in request.json()["query"]["pages"][key]:
-                resultlist.append(request.json()["query"]["pages"][key]["title"])
+    for name in massaged_names:
+        cur.execute("SELECT exists (SELECT page_id FROM page WHERE page_title = %s AND page_namespace=0);" , (name.encode('utf-8'),))
+        sqlresults = cur.fetchall()
+        if sqlresults[0] == (0L,):  # the page does not exist
+            resultlist.append(name)
     return resultlist
 
 
