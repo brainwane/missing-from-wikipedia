@@ -30,7 +30,7 @@ class name_processing_test(unittest.TestCase):
     def test_three_item_reversal(self):
     # Test that special three-name items reverse appropriately.
         testname = ["Obama, Barack, Sr."]
-        expectedresult = ["Barack Obama, Sr."]
+        expectedresult = ["Barack_Obama,_Sr."]
         testresult = massagenames(testname)
         self.assertEqual(testresult, expectedresult)
 
@@ -38,7 +38,7 @@ class name_processing_test(unittest.TestCase):
 class page_existence_test(unittest.TestCase):
 
     def setUp(self):
-        self.notablepeople = ["Booker T. Washington", "Angie Zapata"]
+        self.notablepeople = ["Booker_T._Washington", "Angie_Zapata"]
         self.imaginarypeople = ["NEVEREXISTS"]
 
     def test_existing_page(self):
