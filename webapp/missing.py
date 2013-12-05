@@ -46,13 +46,14 @@ def massagenames(names):
         # special case with "lastname, firstname, suffix"
         # fix to "firstname lastname, suffix"
         if (len(parts) == 3):
-            final = "%s %s, %s" % (parts[0], parts[1], parts[2])
+            inprogress = "%s %s, %s" % (parts[0], parts[1], parts[2])
         else:
-            final = " ".join(parts)
+            inprogress = " ".join(parts)
         # replace hyphens
-        final = final.replace("- ", "-")
-        spaces_to_underscores = final.replace(" ", "_")
-        return spaces_to_underscores
+        inprogress = inprogress.replace("- ", "-")
+        spaces_to_underscores = inprogress.replace(" ", "_")
+        final = spaces_to_underscores.encode('utf-8')
+        return final
     return [process_name(name) for name in names]
 
 
@@ -62,6 +63,11 @@ def chunknames(names):
         yield names[:CHUNK_SIZE]
         names = names[CHUNK_SIZE:]
 
+def getconnection(wikipedia_language):
+    db = MySQLdb.connect(read_default_file='~/replica.my.cnf',
+                         host=wikipedia_language+"wiki.labsdb",
+                         db=wikipedia_language+"wiki_p")
+    return db.cursor()
 
 def leftout(massaged_names, wikipedia_language):
     """Return list of people who don't have pages on the wiki.
@@ -71,23 +77,19 @@ def leftout(massaged_names, wikipedia_language):
     Uses a direct MySQL check on the replicated database.
 """
 
-
-    db = MySQLdb.connect(read_default_file='~/replica.my.cnf',
-                         host=wikipedia_language+"wiki.labsdb",
-                         db=wikipedia_language+"wiki_p")
-    cur = db.cursor()
-    resultlist = []
-    for name in massaged_names:
-        cur.execute("SELECT exists (SELECT page_id FROM page WHERE page_title = %s AND page_namespace=0);" , (name.encode('utf-8'),))
-        sqlresults = cur.fetchall()
-        if sqlresults[0] == (0L,):  # the page does not exist
-            resultlist.append(name)
-    return resultlist
+    cur = getconnection(wikipedia_language)
+    sql = "SELECT page_title FROM page WHERE page_title in (%s) AND page_namespace=0;"
+    format_strings = ','.join(['%s'] * len(massaged_names))
+    cur.execute(sql % format_strings , massaged_names)
+    sqlresults = cur.fetchall()
+    exists_set = set(map(lambda x: x[0], sqlresults))
+    resultset = set(massaged_names).difference(exists_set)
+    return list(resultset)
 
 
 def outputfile(resultlist, filename):
     with codecs.open(filename, encoding='utf-8', mode='a') as out_fd:
-        [out_fd.write("%s\n" % pagename) for pagename in resultlist]
+        [out_fd.write("%s\n" % pagename.decode('utf-8')) for pagename in resultlist]
 
 
 def nameoutputfile(name):
