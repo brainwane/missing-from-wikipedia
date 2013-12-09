@@ -52,7 +52,7 @@ def massagenames(names):
         # replace hyphens
         inprogress = inprogress.replace("- ", "-")
         spaces_to_underscores = inprogress.replace(" ", "_")
-        final = spaces_to_underscores.encode('utf-8')
+        final = spaces_to_underscores.decode('utf-8')
         return final
     return [process_name(name) for name in names]
 
