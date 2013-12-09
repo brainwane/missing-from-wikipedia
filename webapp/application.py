@@ -34,7 +34,7 @@ def index():
     else:  # request was POST
         print "we did a POST!"
         if 'pagename' in request.form:
-            namestocheck, language = request.form['pagename'].decode('utf-8'), request.form['langname']
+            namestocheck, language = request.form['pagename'].encode('utf-8'), request.form['langname']
             namestocheck = namestocheck.split('\r\n')
         else:
             namefilestorage, language = request.files[('fileofnames')].stream, request.form['langname']
