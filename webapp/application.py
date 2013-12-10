@@ -34,6 +34,7 @@ def index():
     else:  # request was POST
         print "we did a POST!"
         if 'pagename' in request.form:
+            print type(request.form['pagename'])
             namestocheck, language = request.form['pagename'].encode('utf-8'), request.form['langname']
             namestocheck = namestocheck.split('\r\n')
         else:

@@ -36,8 +36,10 @@ def getnamefile(filename):
 
 
 def massagenames(names):
-    """Take list, make each name firstname lastname, then return list of processed names."""
+    """Take list of strings, make each name firstname lastname, then return list of processed names."""
     def process_name(name):
+        if not isinstance(name, unicode):
+            name = name.decode('utf-8')
         parts = name.split(", ")
         # flip first and last names
         if (len(parts) > 1):
@@ -51,8 +53,7 @@ def massagenames(names):
             inprogress = " ".join(parts)
         # replace hyphens
         inprogress = inprogress.replace("- ", "-")
-        spaces_to_underscores = inprogress.replace(" ", "_")
-        final = spaces_to_underscores.decode('utf-8')
+        final = inprogress.replace(" ", "_")
         return final
     return [process_name(name) for name in names]
 
@@ -66,7 +67,9 @@ def chunknames(names):
 def getconnection(wikipedia_language):
     db = MySQLdb.connect(read_default_file='~/replica.my.cnf',
                          host=wikipedia_language+"wiki.labsdb",
-                         db=wikipedia_language+"wiki_p")
+                         db=wikipedia_language+"wiki_p",
+                         charset='utf8',
+                         use_unicode=True)
     return db.cursor()
 
 def leftout(massaged_names, wikipedia_language):
@@ -78,8 +81,8 @@ def leftout(massaged_names, wikipedia_language):
 """
 
     cur = getconnection(wikipedia_language)
-    sql = "SELECT page_title FROM page WHERE page_title in (%s) AND page_namespace=0;"
-    format_strings = ','.join(['%s'] * len(massaged_names))
+    sql = u"SELECT page_title FROM page WHERE page_title in (%s) AND page_namespace=0;"
+    format_strings = u','.join(['%s'] * len(massaged_names))
     cur.execute(sql % format_strings , massaged_names)
     sqlresults = cur.fetchall()
     exists_set = set(map(lambda x: x[0], sqlresults))
@@ -89,7 +92,7 @@ def leftout(massaged_names, wikipedia_language):
 
 def outputfile(resultlist, filename):
     with codecs.open(filename, encoding='utf-8', mode='a') as out_fd:
-        [out_fd.write("%s\n" % pagename.decode('utf-8')) for pagename in resultlist]
+        [out_fd.write("%s\n" % pagename) for pagename in resultlist]
 
 
 def nameoutputfile(name):
