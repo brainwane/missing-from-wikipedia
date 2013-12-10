@@ -1,25 +1,15 @@
 missing-from-wikipedia
 ======================
 
-Take a file of names, find out which names do NOT have Wikipedia entries, and then spit out that resultant set to a file.
+A Flask web app to take a file or list of names, find out which names do NOT have Wikipedia entries, and then spit out that resultant set as links to create those pages on the target Wikipedia. [Wikimedia's Tool Labs hosts an instance of this app.](https://tools.wmflabs.org/missing-from-wikipedia/index)
 
-You run it with two options:
+See namelist-sample.txt for an example of how to format a file you can pass into the app: one name per line.
 
-> webapp/missing.py INPUT-FILENAME WIKIPEDIA-PREFIX
+If you want a command-line version you can run to use the MediaWiki web API, see [commit 3246205a9fc67d4c1abfe43c9c2a67ef723b4936](https://github.com/brainwane/missing-from-wikipedia/tree/3246205a9fc67d4c1abfe43c9c2a67ef723b4936).
 
-1. The file of names to look for. See namelist-sample.txt for an example of how to format it: one name per line.
-2. The language Wikipedia you want, as designated by its language prefix. For example, for French Wikipedia, you'd use 'fr' (no quote marks). [See the list of Wikipedias.](https://meta.wikimedia.org/wiki/List_of_Wikipedias)
+Known bugs
+==========
 
-It then creates a new file containing the output (one name per line), with a filename like "INPUT-FILENAME-[timestamp].txt". You'll also see, on the command line, some statistics about the percentage of people who didn't have Wikipedia pages.
-
-If you have Python installed on your computer, go to a Terminal (or command line), make sure you're in a directory that has the namelist-sample.txt file, and run it like:
-
-> webapp/missing.py namelist-sample.txt en
-
-and things should just work. Once it's done, you should have a "namelist-sample.2013-12-02-16-59-19.txt" file, or something with a similar name.
-
-More options
-============
-You might want to change these assumptions in missing.py:
-* put your name in the User-Agent header
-* count redirects as "this page exists": yes (to change to no, remove the "&redirects=" part of the URI on line 77)
+# Unicode problems - if you pass in a string with Unicode characters, even if a page with that name exists, it'll falsely say that the page doesn't exist.
+# SQL escaping problems - if you pass in a string with a single quotation mark in it, same problem as above.
+# Only checks the Latin representation, thus leading to false positives -- need to hit Wikidata database and use Universal Language Selector to really address this.
