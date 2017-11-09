@@ -7,6 +7,8 @@ See namelist-sample.txt for an example of how to format a file you can pass into
 
 If you want a command-line version you can run to use the MediaWiki web API, see [commit 3246205a9fc67d4c1abfe43c9c2a67ef723b4936](https://github.com/brainwane/missing-from-wikipedia/tree/3246205a9fc67d4c1abfe43c9c2a67ef723b4936).
 
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 Known bugs
 ==========
 
